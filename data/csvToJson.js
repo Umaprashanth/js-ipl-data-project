@@ -10,7 +10,7 @@ function csvToJson(inputFile,outputFile){
         .on('end', ()=>{
             fs.writeFileSync(outputFile, JSON.stringify(result,null,2),'utf-8')
             console.log(`the file has been saved as ${outputFile}`)
-        })
+        }) 
 }
 
 // csvToJson("./data/deliveries.csv", "./data/deliveries.json")

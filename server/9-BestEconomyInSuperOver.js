@@ -31,6 +31,9 @@ function bestEconomyInSuperOver(input){
         ]
     ))
 
+    console.log(Object.entries(bestBowler));
+    
+
     // const bestBowler = Object.entries(bowlerStats).reduce((best, [bowler, stats]) => {
     //     const economy = (stats.runs / (stats.balls / 6)).toFixed(2);
     //     return !best || economy < best.economy ? { bowler, economy } : best;
@@ -43,7 +46,7 @@ function bestEconomyInSuperOver(input){
     
     
     
-     writeFile('./public/output/9-bestEconomyInSuperOver.json', result)
+    //  writeFile('./public/output/9-bestEconomyInSuperOver.json', result)
 } 
 
 bestEconomyInSuperOver("./data/deliveries.json")
