@@ -10,43 +10,43 @@ function bestEconomyInSuperOver(input){
 
     let deliveries = readFile(input)
 
-    let superOver = deliveries.filter(delivery => delivery.is_super_over === "1")
 
-    let res = superOver.reduce((acc, ele) => {
+    let superOver = []
 
-        let bowler = ele.bowler
-        acc [bowler] = acc[bowler] || { runs: 0 , balls :0};
-        acc[bowler].runs += parseInt(ele.total_runs) - parseInt(ele.legbye_runs) - parseInt(ele.bye_runs);
-        if (ele.wide_runs === "0" && ele.noball_runs === "0"){
-            acc[bowler].balls += 1
+    for (let i =0; i<deliveries.length; i++){
+        let num = deliveries[i]
+
+        if (num.is_super_over === "1"){
+
+            superOver.push(num)
         }
-        return acc
-    }, {});
+    }
+
+    let res= {}
+
+    for (let j = 0; j<superOver.length; j++){
+        let num = superOver[j]
+
+        res[num.bowler] = res[num.bowler] || {runs:0, balls:0}
+        res[num.bowler].runs += parseInt(num.total_runs) - parseInt(num.legbye_runs) - parseInt(num.bye_runs)
+
+        if (num.wide_runs === "0" && num.noball_runs === "0"){
+            res[num.bowler].balls += 1
+        }
+    }
 
 
-    let bestBowler = Object.fromEntries(
-        Object.entries(res).map(([bowler,stats]) => [
-            bowler,
-            parseFloat( ((stats.runs * 6) / (stats.balls)).toFixed(2))
-        ]
-    ))
+    let bestBowler = {};
 
-    console.log(Object.entries(bestBowler));
+    for (let [bowler, stats] of Object.entries(res)) {
+      bestBowler[bowler] = parseFloat(((stats.runs * 6) / (stats.balls)).toFixed(2));
+    }
+
     
-
-    // const bestBowler = Object.entries(bowlerStats).reduce((best, [bowler, stats]) => {
-    //     const economy = (stats.runs / (stats.balls / 6)).toFixed(2);
-    //     return !best || economy < best.economy ? { bowler, economy } : best;
-    // }, null);
-
 
    let result =Object.fromEntries([(Object.entries(bestBowler).sort((a,b) => a[1] - b[1]))[0]])
- 
-    console.log(result);
     
-    
-    
-    //  writeFile('./public/output/9-bestEconomyInSuperOver.json', result)
+     writeFile('./public/output/9-bestEconomyInSuperOver.json', result)
 } 
 
 bestEconomyInSuperOver("./data/deliveries.json")

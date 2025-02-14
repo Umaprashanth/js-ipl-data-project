@@ -3,26 +3,22 @@
 import fs, { read } from "fs";
 import writeFile from "../data/fileWriter.js";
 import readFile from "../data/readFile.js";
+import { log } from "console";
 
 function dismissalByOtherPlayer(input){
 
     let data = readFile(input)
 
-    let dismissal = data.reduce((acc,ele) => {
+    let dismissal = {}
 
-        if ((ele.player_dismissed !== "") && (ele.dismissal_kind  !== "run out")){
+    for (let i = 0; i<data.length; i++ ){
+        let num = data[i]
 
-            acc[ele.batsman] = acc[ele.batsman] || {} 
-            acc[ele.batsman][ele.bowler] =  acc[ele.batsman][ele.bowler] || 0
-
-            acc[ele.batsman][ele.bowler] += 1
-        
+        if ((num.player_dismissed !== "") && (num.dismissal_kind !== "run out")){
+                dismissal[num.batsman] = dismissal[num.batsman] || {}
+                dismissal[num.batsman][num.bowler] = (dismissal[num.batsman][num.bowler] || 0) + 1
         }
-
-        return acc
-
-    },{})
-
+    }
 
 
     for (let obj in dismissal){
@@ -40,6 +36,7 @@ function dismissalByOtherPlayer(input){
         return valueB - valueA; 
     });
    
+    
    writeFile('./public/output/8-dismissalByOtherPlayer.json', res[0])
     
     

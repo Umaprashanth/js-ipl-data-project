@@ -10,43 +10,46 @@ function top10EconomicalBowlers2015(input1,input2){
     let matches = readFile(input1)
     let deliveries = readFile(input2)
 
-    let matchId = matches.reduce((acc,ele) => {
-        
-        if (ele.season === "2015"){
-            acc.push(ele.id)
+    let matchId = []
+    for (let i = 0; i<matches.length; i++){
+
+        let obj = matches[i]
+        if (obj.season==="2015"){
+            matchId.push(obj.id)
         }
+    }
 
-        return acc
-    },[])
-    
-    let res = deliveries.reduce((acc, ele) => {
+    let res = {}
 
-        if (matchId.includes(ele.match_id)){
-        let bowler = ele.bowler
-        acc [bowler] = acc[bowler] || { runs: 0 , balls :0};
-        acc[bowler].runs += parseInt(ele.total_runs) - parseInt(ele.legbye_runs) - parseInt(ele.bye_runs);
-        if (ele.wide_runs === "0" && ele.noball_runs === "0"){
-            acc[bowler].balls += 1
-        }}
-        return acc
-    }, {});
+    for(let j=0 ; j<deliveries.length; j++){
+        let obj = deliveries[j]
 
- 
+        if (matchId.includes(obj.match_id)){
+            res[obj.bowler] = res[obj.bowler] || {runs:0, balls:0}
+            res[obj.bowler].runs += parseInt(obj.total_runs) - parseInt(obj.legbye_runs) - parseInt(obj.bye_runs);
+            if (obj.wide_runs === "0" && obj.noball_runs === "0"){
+                res[obj.bowler].balls += 1
+            }}
+
+        }
     
 
-let bestBowler = Object.fromEntries(
-    Object.entries(res).map(([bowler,stats]) => [
-        bowler,
-        parseFloat( ((stats.runs * 6) / (stats.balls)).toFixed(2))
-    ]
-))
+
+    let bestBowler = {};
+
+    for (let [bowler, stats] of Object.entries(res)) {
+      bestBowler[bowler] = parseFloat(((stats.runs * 6) / (stats.balls)).toFixed(2));
+    }
+
+    
 
     let sortList = (Object.entries(bestBowler).sort((a,b) => a[1] - b[1]))
 
     let ans = Object.fromEntries(sortList.slice(0,10))
 
-    writeFile('./public/output/4-Top10EconomicalBowler2015.json', ans)    
+    
 
+    writeFile('./public/output/4-Top10EconomicalBowler2015.json', ans)    
 }
 
 top10EconomicalBowlers2015("./data/matches.json","./data/deliveries.json")

@@ -12,32 +12,35 @@ function bestStrikeRateEachSeason(input1, input2){
     let matches = readFile(input1)
     let deliveries = readFile(input2)
 
+    let matchId = {}
 
-    let matchId = matches.reduce((acc, match) => {
-        acc[match.season] = acc[match.season] || [];
-        if (!acc[match.season].includes(match.id)){
-            acc[match.season].push(match.id)
+    for (let i = 0; i<matches.length; i++){
+        let num = matches[i]
+        matchId[num.season] = matchId[num.season] || []
+        if (!matchId[num.season].includes(num.id)){
+
+            matchId[num.season].push(num.id)
         }
-        return acc;
-    }, {});
+    }
 
-   
-    
-    let stats = deliveries.reduce((acc,delivery) => {
 
-        for (let year in matchId){
-            if (matchId[year].includes(delivery.match_id)){
+    let stats = {}
 
-                acc[year] = acc[year] || {}
-                acc[year][delivery.batsman] = acc[year][delivery.batsman] || {runs : 0, balls : 0}
-                acc[year][delivery.batsman].runs += parseInt(delivery.batsman_runs)
-                if (delivery.wide_runs === "0"){
-                    acc[year][delivery.batsman].balls += 1
+    for ( let j=0; j<deliveries.length; j++ ){
+        let obj = deliveries[j]
+
+        for (let year in matchId){ 
+            if (matchId[year].includes(obj.match_id)){
+                stats[year] = stats[year] || {}
+                stats[year][obj.batsman] = stats[year][obj.batsman] || {runs : 0, balls : 0}
+                stats[year][obj.batsman].runs += parseInt(obj.batsman_runs)
+                if (obj.wide_runs === "0"){
+                    stats[year][obj.batsman].balls += 1
                 }
+
             }
         }
-        return acc
-    },{})
+    }
 
     
     
@@ -52,6 +55,7 @@ function bestStrikeRateEachSeason(input1, input2){
             )
         
     }
+    
 
      writeFile('./public/output/7-bestStrikeRateEachSeason.json', stats)
 }

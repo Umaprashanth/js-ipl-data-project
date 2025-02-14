@@ -9,22 +9,33 @@ function highestMoM(input){
 
     let matches = readFile(input)
 
-    let res = matches.reduce((acc,ele) =>{
+    let res = {}
 
-        const season = ele.season;
-        const player = ele.player_of_match;
+    for (let i=0; i<matches.length; i++){
+        let obj = matches[i]
 
-        acc[season] = acc[season] || {}
-        acc[season][player] = (acc[season][player] || 0) +1
-        return acc
-    },{})
+        res[obj.season] = res[obj.season] || {}
+        res[obj.season][obj.player_of_match] = (res[obj.season][obj.player_of_match] || 0) + 1
+    }
+
+    console.log(res);
     
+    
+    const topPlayersPerSeason = {};
 
-    const topPlayersPerSeason = Object.entries(res).reduce((acc, [season, players]) => {
-        acc[season] = Object.entries(players).reduce((max, player) => player[1] > max[1] ? player : max);
-        return acc;
-
-    }, {});
+    for (const [season, players] of Object.entries(res)) {
+        let maxPlayer = null;
+        let maxValue = -Infinity;
+        
+        for (const [player, value] of Object.entries(players)) {
+            if (value > maxValue) {
+                maxValue = value;
+                maxPlayer = player;
+            }
+        }
+        
+        topPlayersPerSeason[season] = [maxPlayer, maxValue];
+    }
     
 
     // console.log(topPlayersPerSeason);
