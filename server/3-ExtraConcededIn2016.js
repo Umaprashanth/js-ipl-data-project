@@ -26,9 +26,10 @@ function extrasConceded(input1, input2) {
       const team = delivery.bowling_team;
       if (!result[team]) {
         result[team] = 0;
-      } else {
-        result[team] += parseInt(num.extra_runs);
-      }
+      } 
+      
+      result[team] += parseInt(num.extra_runs);
+      
     }
   }
 

@@ -20,9 +20,10 @@ function dismissalByOtherPlayer(input){
                 }
                 if (!dismissal[delivery.batsman][delivery.bowler]){
                     dismissal[delivery.batsman][delivery.bowler] = 0
-                } else{
-                    dismissal[delivery.batsman][delivery.bowler] += 1
-                }
+                } 
+                
+                dismissal[delivery.batsman][delivery.bowler] += 1
+                
         }
     }
 

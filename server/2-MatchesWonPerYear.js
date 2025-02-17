@@ -19,9 +19,10 @@ function matchesWonPerYear(input) {
         }
         if (! result[match.season][match.winner]){
           (result[match.season][match.winner] = 0)
-        } else{
-          (result[match.season][match.winner]) += 1
-        }
+        } 
+        
+        result[match.season][match.winner] += 1
+    
         
       }
     }

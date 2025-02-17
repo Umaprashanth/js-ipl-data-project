@@ -20,9 +20,9 @@ function highestMoM(input){
 
         if (!result[match.season][match.player_of_match]){
             result[match.season][match.player_of_match] = 0
-        } else {
-            result[match.season][match.player_of_match] += 1
-        }
+        } 
+        result[match.season][match.player_of_match] += 1
+        
     }
 
     // console.log(res);
