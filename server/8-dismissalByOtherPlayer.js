@@ -12,11 +12,17 @@ function dismissalByOtherPlayer(input){
     let dismissal = {}
 
     for (let i = 0; i<data.length; i++ ){
-        let num = data[i]
+        let delivery = data[i]
 
-        if ((num.player_dismissed !== "") && (num.dismissal_kind !== "run out")){
-                dismissal[num.batsman] = dismissal[num.batsman] || {}
-                dismissal[num.batsman][num.bowler] = (dismissal[num.batsman][num.bowler] || 0) + 1
+        if ((delivery.player_dismissed !== "") && (delivery.dismissal_kind !== "run out")){
+                if (!dismissal[delivery.batsman]){
+                    dismissal[delivery.batsman] = {}
+                }
+                if (!dismissal[delivery.batsman][delivery.bowler]){
+                    dismissal[delivery.batsman][delivery.bowler] = 0
+                } else{
+                    dismissal[delivery.batsman][delivery.bowler] += 1
+                }
         }
     }
 
@@ -29,7 +35,7 @@ function dismissalByOtherPlayer(input){
         dismissal[obj] = bowlers
     }
 
-    const res = Object.entries(dismissal).sort((a, b) => {
+    const result = Object.entries(dismissal).sort((a, b) => {
       
         const valueA = Object.values(a[1]);
         const valueB = Object.values(b[1]);
@@ -37,7 +43,7 @@ function dismissalByOtherPlayer(input){
     });
    
     
-   writeFile('./public/output/8-dismissalByOtherPlayer.json', res[0])
+   writeFile('./public/output/8-dismissalByOtherPlayer.json', result[0])
     
     
 }

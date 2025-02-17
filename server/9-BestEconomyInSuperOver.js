@@ -14,11 +14,11 @@ function bestEconomyInSuperOver(input){
     let superOver = []
 
     for (let i =0; i<deliveries.length; i++){
-        let num = deliveries[i]
+        let delivery = deliveries[i]
 
-        if (num.is_super_over === "1"){
+        if (delivery.is_super_over === "1"){
 
-            superOver.push(num)
+            superOver.push(delivery)
         }
     }
 
@@ -27,7 +27,10 @@ function bestEconomyInSuperOver(input){
     for (let j = 0; j<superOver.length; j++){
         let num = superOver[j]
 
-        res[num.bowler] = res[num.bowler] || {runs:0, balls:0}
+        if(!res[num.bowler]){
+            res[num.bowler] = {runs:0, balls:0}
+        }
+
         res[num.bowler].runs += parseInt(num.total_runs) - parseInt(num.legbye_runs) - parseInt(num.bye_runs)
 
         if (num.wide_runs === "0" && num.noball_runs === "0"){

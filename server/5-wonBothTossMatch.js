@@ -9,20 +9,23 @@ function wonBothTossMatch(input){
 
     let matches = readFile(input)
     
-    let res = {}
+    let result = {}
 
     for (let i = 0; i<matches.length; i++){
-      let num = matches[i]
+      let match = matches[i]
 
-      res[num.team1] =res[num.team1] || 0
+    
+      if (!result[match.team1]) {
+        result[match.team1] = 0
+      }
 
-      if (res[num.toss_winner] == res[num.winner]){
-         res[num.winner] += 1
+      if (result[match.toss_winner] == result[match.winner]){
+         result[match.winner] += 1
       }
     }
     
         
-     writeFile('./public/output/5-wonBothTossMatch.json', res)
+     writeFile('./public/output/5-wonBothTossMatch.json', result)
 }
 
 

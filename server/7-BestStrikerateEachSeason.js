@@ -15,11 +15,13 @@ function bestStrikeRateEachSeason(input1, input2){
     let matchId = {}
 
     for (let i = 0; i<matches.length; i++){
-        let num = matches[i]
-        matchId[num.season] = matchId[num.season] || []
-        if (!matchId[num.season].includes(num.id)){
+        let match = matches[i]
 
-            matchId[num.season].push(num.id)
+        if(!matchId[match.season]){
+            matchId[match.season] = []
+        }
+        if (!matchId[match.season].includes(match.id)){
+            matchId[match.season].push(match.id)
         }
     }
 
@@ -31,8 +33,12 @@ function bestStrikeRateEachSeason(input1, input2){
 
         for (let year in matchId){ 
             if (matchId[year].includes(obj.match_id)){
-                stats[year] = stats[year] || {}
-                stats[year][obj.batsman] = stats[year][obj.batsman] || {runs : 0, balls : 0}
+                if (!stats[year]){
+                    stats[year] = {}
+                }
+                if (!stats[year][obj.batsman]){
+                    stats[year][obj.batsman] = {runs : 0, balls : 0}
+                }
                 stats[year][obj.batsman].runs += parseInt(obj.batsman_runs)
                 if (obj.wide_runs === "0"){
                     stats[year][obj.batsman].balls += 1

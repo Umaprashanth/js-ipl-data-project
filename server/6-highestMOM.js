@@ -9,16 +9,23 @@ function highestMoM(input){
 
     let matches = readFile(input)
 
-    let res = {}
+    let result = {}
 
     for (let i=0; i<matches.length; i++){
-        let obj = matches[i]
+        let match = matches[i]
 
-        res[obj.season] = res[obj.season] || {}
-        res[obj.season][obj.player_of_match] = (res[obj.season][obj.player_of_match] || 0) + 1
+        if (!result[match.season]){
+            result[match.season] = {}
+        }
+
+        if (!result[match.season][match.player_of_match]){
+            result[match.season][match.player_of_match] = 0
+        } else {
+            result[match.season][match.player_of_match] += 1
+        }
     }
 
-    console.log(res);
+    // console.log(res);
     
     
     const topPlayersPerSeason = {};
