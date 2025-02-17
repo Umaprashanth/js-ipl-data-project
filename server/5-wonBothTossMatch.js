@@ -9,19 +9,21 @@ function wonBothTossMatch(input){
 
     let matches = readFile(input)
 
-    let res = matches.reduce((acc,ele) => {
-       
-       acc[ele.team1] = acc[ele.team1]||0
+    let result = matches.reduce((acc,match) => {
 
-       if (acc[ele.toss_winner] == acc[ele.winner]){
-        acc[ele.winner] += 1
+       if (!acc[match.team1]){
+         acc[match.team1] = 0
+       }
+
+       if (acc[match.toss_winner] == acc[match.winner]){
+        acc[match.winner] += 1
        }
        return acc
     },{})
     
     
         
-     writeFile('./public/output/5-wonBothTossMatch.json', res)
+     writeFile('./public/output/5-wonBothTossMatch.json', result)
 }
 
 

@@ -14,7 +14,10 @@ function bestStrikeRateEachSeason(input1, input2){
 
 
     let matchId = matches.reduce((acc, match) => {
-        acc[match.season] = acc[match.season] || [];
+
+        if (!acc[match.season]){
+            acc[match.season] = []
+        }
         if (!acc[match.season].includes(match.id)){
             acc[match.season].push(match.id)
         }
@@ -28,9 +31,15 @@ function bestStrikeRateEachSeason(input1, input2){
         for (let year in matchId){
             if (matchId[year].includes(delivery.match_id)){
 
-                acc[year] = acc[year] || {}
-                acc[year][delivery.batsman] = acc[year][delivery.batsman] || {runs : 0, balls : 0}
+                if (!acc[year]){
+                    acc[year] = []
+                }
+
+                if (!acc[year][delivery.batsman]){
+                    acc[year][delivery.batsman] = {runs : 0, balls : 0}
+                }
                 acc[year][delivery.batsman].runs += parseInt(delivery.batsman_runs)
+                
                 if (delivery.wide_runs === "0"){
                     acc[year][delivery.batsman].balls += 1
                 }

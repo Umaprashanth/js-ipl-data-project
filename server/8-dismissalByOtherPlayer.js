@@ -8,14 +8,19 @@ function dismissalByOtherPlayer(input){
 
     let data = readFile(input)
 
-    let dismissal = data.reduce((acc,ele) => {
+    let dismissal = data.reduce((acc,delivery) => {
 
-        if ((ele.player_dismissed !== "") && (ele.dismissal_kind  !== "run out")){
+        if ((delivery.player_dismissed !== "") && (delivery.dismissal_kind  !== "run out")){
 
-            acc[ele.batsman] = acc[ele.batsman] || {} 
-            acc[ele.batsman][ele.bowler] =  acc[ele.batsman][ele.bowler] || 0
+            if (!acc[delivery.batsman]){
+                acc[delivery.batsman] = {}
+            }
 
-            acc[ele.batsman][ele.bowler] += 1
+            if (!acc[delivery.batsman][delivery.bowler]){
+                acc[delivery.batsman][delivery.bowler] = 0
+            }
+
+            acc[delivery.batsman][delivery.bowler] += 1
         
         }
 
@@ -33,14 +38,14 @@ function dismissalByOtherPlayer(input){
         dismissal[obj] = bowlers
     }
 
-    const res = Object.entries(dismissal).sort((a, b) => {
+    const result = Object.entries(dismissal).sort((a, b) => {
       
         const valueA = Object.values(a[1]);
         const valueB = Object.values(b[1]);
         return valueB - valueA; 
     });
    
-   writeFile('./public/output/8-dismissalByOtherPlayer.json', res[0])
+   writeFile('./public/output/8-dismissalByOtherPlayer.json', result[0])
     
     
 }

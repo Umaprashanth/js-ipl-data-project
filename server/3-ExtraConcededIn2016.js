@@ -10,18 +10,23 @@ function extrasConceded(input1, input2){
     let matches = readFile(input1)
     let deliveries = readFile(input2)
 
-    let matchesId = matches.filter((ele) => ele.season == 2016).map((ele) => ele.id);
+    let matchesId = matches.filter((match) => match.season == 2016).map((match) => match.id);
 
-    let res = deliveries.reduce((acc, ele)=> {
-        if (matchesId.includes(ele.match_id)){
-            const team = ele.bowling_team;
-            acc[team] = (acc[team] || 0) + parseInt(ele.extra_runs)
+    let result = deliveries.reduce((acc, match)=> {
+        if (matchesId.includes(match.match_id)){
+            const team = match.bowling_team;
+
+            if (!acc[team]){
+                acc[team] = 0
+            }
+            acc[team] += parseInt(match.extra_runs)
+
         }
             return acc
     },{})
     
     
-    writeFile('./public/output/3-extraConcededIn2016.json', res)
+    writeFile('./public/output/3-extraConcededIn2016.json', result)
     
 }
 

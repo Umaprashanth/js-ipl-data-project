@@ -10,22 +10,25 @@ function top10EconomicalBowlers2015(input1,input2){
     let matches = readFile(input1)
     let deliveries = readFile(input2)
 
-    let matchId = matches.reduce((acc,ele) => {
+    let matchId = matches.reduce((acc,match) => {
         
-        if (ele.season === "2015"){
-            acc.push(ele.id)
+        if (match.season === "2015"){
+            acc.push(match.id)
         }
 
         return acc
     },[])
     
-    let res = deliveries.reduce((acc, ele) => {
+    let resultWithoutSort = deliveries.reduce((acc, delivery) => {
 
-        if (matchId.includes(ele.match_id)){
-        let bowler = ele.bowler
-        acc [bowler] = acc[bowler] || { runs: 0 , balls :0};
-        acc[bowler].runs += parseInt(ele.total_runs) - parseInt(ele.legbye_runs) - parseInt(ele.bye_runs);
-        if (ele.wide_runs === "0" && ele.noball_runs === "0"){
+        if (matchId.includes(delivery.match_id)){
+        let bowler = delivery.bowler
+
+        if (!acc[bowler]){
+            acc[bowler] = { runs: 0 , balls :0}
+        }
+        acc[bowler].runs += parseInt(delivery.total_runs) - parseInt(delivery.legbye_runs) - parseInt(delivery.bye_runs);
+        if (delivery.wide_runs === "0" && delivery.noball_runs === "0"){
             acc[bowler].balls += 1
         }}
         return acc
@@ -35,7 +38,7 @@ function top10EconomicalBowlers2015(input1,input2){
     
 
 let bestBowler = Object.fromEntries(
-    Object.entries(res).map(([bowler,stats]) => [
+    Object.entries(resultWithoutSort).map(([bowler,stats]) => [
         bowler,
         parseFloat( ((stats.runs * 6) / (stats.balls)).toFixed(2))
     ]
@@ -43,9 +46,9 @@ let bestBowler = Object.fromEntries(
 
     let sortList = (Object.entries(bestBowler).sort((a,b) => a[1] - b[1]))
 
-    let ans = Object.fromEntries(sortList.slice(0,10))
+    let answer = Object.fromEntries(sortList.slice(0,10))
 
-    writeFile('./public/output/4-Top10EconomicalBowler2015.json', ans)    
+    writeFile('./public/output/4-Top10EconomicalBowler2015.json', answer)    
 
 }
 

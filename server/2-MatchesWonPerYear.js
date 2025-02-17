@@ -7,29 +7,36 @@ import readFile from "../data/readFile.js";
 function matchesWonPerYear(input) {
   const data = readFile(input)
 
-  let res = data.reduce((acc,num)=>{
+  let result = data.reduce((acc,match)=>{
 
-    if(num.winner){
-        acc[num.season] = acc[num.season] || {}
-        acc[num.season][num.winner] = (acc[num.season][num.winner] || 0) + 1
+    if(match.winner){
+
+        if (!acc[match.season]){
+          acc[match.season] = {}
+        }
+
+        if (!acc[match.season][match.winner]){
+          acc[match.season][match.winner] = 0
+        }
+        acc[match.season][match.winner] += 1
     }
 
     return acc
 
   },{});
 
-    for (let obj in res){
-        let arr = Object.entries(res[obj])
+    for (let obj in result){
+        let arr = Object.entries(result[obj])
         arr.sort((a,b)=> b[1]-a[1])
-        res[obj] = Object.fromEntries(arr)
+        result[obj] = Object.fromEntries(arr)
     }
 
-    console.log(res)
+    console.log(result)
 
 
   
 
-    writeFile('./public/output/2-MatchWonPerYear.json', res)
+    writeFile('./public/output/2-MatchWonPerYear.json', result)
   }
 
 matchesWonPerYear("./data/matches.json")
